@@ -37,6 +37,52 @@ const HeroSection = () => {
     }
   };
 
+  // Buttons component to avoid duplication
+  const ActionButtons = ({ className = "", motionProps = {} }) => (
+    <div className={`flex flex-col sm:flex-row gap-4 sm:gap-2 ${className}`}>
+      <motion.button
+        onClick={handleHireClick}
+        className="px-6 py-3 rounded-full bg-gradient-to-br from-[#0553B1] via-[#42A5F5] to-[#03DAC5] text-white cursor-pointer"
+        whileHover={{
+          scale: 1.05,
+          boxShadow: "0 0 15px rgba(3, 218, 197, 0.5)",
+        }}
+        whileTap={{ scale: 0.95 }}
+        {...motionProps}
+      >
+        Hire Me
+      </motion.button>
+      <motion.button
+        onClick={handleDownloadCV}
+        className="px-1 py-1 rounded-full bg-gradient-to-br from-[#0553B1] via-[#42A5F5] to-[#03DAC5] hover:bg-slate-800 text-white cursor-pointer"
+        whileHover={{
+          scale: 1.05,
+          boxShadow: "0 0 15px rgba(3, 218, 197, 0.5)",
+        }}
+        whileTap={{ scale: 0.95 }}
+        {...motionProps}
+      >
+        <span className="block bg-[#112240] hover:bg-[#1A365D] rounded-full px-5 py-2 flex items-center justify-center gap-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+            />
+          </svg>
+          Download CV
+        </span>
+      </motion.button>
+    </div>
+  );
+
   return (
     <section>
       <div className="grid grid-cols-1 lg:grid-cols-12">
@@ -88,51 +134,16 @@ const HeroSection = () => {
           >
             I turn visions into amazing realities! 💻
           </motion.p>
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-2">
-            <motion.button
-              onClick={handleHireClick}
-              className="px-6 py-3 rounded-full bg-gradient-to-br from-[#0553B1] via-[#42A5F5] to-[#03DAC5] text-white cursor-pointer"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.9 }}
-              whileHover={{
-                scale: 1.05,
-                boxShadow: "0 0 15px rgba(3, 218, 197, 0.5)",
+
+          {/* Buttons - visible only on non-mobile screens */}
+          <div className="hidden sm:block">
+            <ActionButtons
+              motionProps={{
+                initial: { opacity: 0, y: 20 },
+                animate: { opacity: 1, y: 0 },
+                transition: { duration: 0.5, delay: 0.9 },
               }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Hire Me
-            </motion.button>
-            <motion.button
-              onClick={handleDownloadCV}
-              className="px-1 py-1 rounded-full bg-gradient-to-br from-[#0553B1] via-[#42A5F5] to-[#03DAC5] hover:bg-slate-800 text-white cursor-pointer"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 1.1 }}
-              whileHover={{
-                scale: 1.05,
-                boxShadow: "0 0 15px rgba(3, 218, 197, 0.5)",
-              }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <span className="block bg-[#112240] hover:bg-[#1A365D] rounded-full px-5 py-2 flex items-center justify-center gap-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                  />
-                </svg>
-                Download CV
-              </span>
-            </motion.button>
+            />
           </div>
         </motion.div>
         <motion.div
@@ -149,7 +160,7 @@ const HeroSection = () => {
               className="w-full h-full rounded-full overflow-hidden"
             >
               <Image
-                src="images/DP.jpeg"
+                src="images/Alwis.JPG"
                 alt="Hero Image"
                 className="rounded-full object-cover"
                 fill
@@ -174,6 +185,16 @@ const HeroSection = () => {
           </div>
         </motion.div>
       </div>
+
+      {/* Mobile buttons - visible only on mobile screens, positioned below the image */}
+      <motion.div
+        className="sm:hidden mt-8 flex justify-center"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 1.2 }}
+      >
+        <ActionButtons />
+      </motion.div>
     </section>
   );
 };

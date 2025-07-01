@@ -28,7 +28,7 @@ const EmailSection = () => {
         }
 
         // Initialize with your public key
-        window.emailjs.init("AFTl812YOCGalX4YY");
+        window.emailjs.init("o5Rf1RAYE1nS2Cz_D");
         console.log("EmailJS initialized successfully");
       } catch (error) {
         console.error("Failed to initialize EmailJS:", error);
@@ -73,8 +73,8 @@ const EmailSection = () => {
 
       // Use emailjs directly instead of window.emailjs for better reliability
       const result = await window.emailjs.send(
-        "service_ygka308",
-        "template_ycim9fn",
+        "service_uwz9qq2",
+        "template_ylzixog",
         templateParams
       );
 

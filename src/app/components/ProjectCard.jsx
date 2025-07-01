@@ -4,6 +4,7 @@ import { CodeBracketIcon, EyeIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { createPortal } from "react-dom";
+import Image from "next/image";
 
 const ProjectCard = ({
   imgUrl,
@@ -15,6 +16,7 @@ const ProjectCard = ({
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [isBrowser, setIsBrowser] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   // Handle mounting for client-side rendering
   useEffect(() => {
@@ -62,10 +64,14 @@ const ProjectCard = ({
           className="w-[90%] max-w-5xl max-h-[80vh] relative"
           onClick={(e) => e.stopPropagation()}
         >
-          <img
+          <Image
             src={imgUrl}
             alt={title}
+            width={1200}
+            height={800}
             className="w-full h-auto object-contain rounded-lg shadow-2xl"
+            loading="eager"
+            onLoad={() => setImageLoaded(true)}
           />
         </div>
       </div>
@@ -75,80 +81,77 @@ const ProjectCard = ({
   return (
     <motion.div
       className="rounded-2xl shadow-lg bg-[#1A365D] overflow-hidden flex flex-col h-full"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
       whileHover={{
-        scale: 1.03,
-        boxShadow:
-          "0 20px 25px -5px rgba(3, 218, 197, 0.1), 0 10px 10px -5px rgba(3, 218, 197, 0.04)",
+        scale: 1.02,
+        transition: { duration: 0.2 },
       }}
-      transition={{ duration: 0.3 }}
+      style={{
+        willChange: "transform",
+        transformStyle: "preserve-3d",
+      }}
     >
       <div className="h-52 md:h-72 relative group flex items-center justify-center overflow-hidden">
-        <motion.img
+        <Image
           src={imgUrl}
           alt={title}
+          width={600}
+          height={400}
           className="w-full h-full object-cover rounded-t-2xl"
-          initial={{ scale: 1 }}
-          whileHover={{ scale: 1.1 }}
-          transition={{ duration: 0.5 }}
+          loading="lazy"
+          placeholder="blur"
+          blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzAwIiBoZWlnaHQ9IjQ3NSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMUEzNjVEIi8+PC9zdmc+"
+          onLoad={() => setImageLoaded(true)}
         />
-        {/* Desktop overlay with icons */}
-        <motion.div
-          className="absolute top-0 left-0 w-full h-full bg-[#112240] opacity-0 sm:group-hover:opacity-80 transition-opacity duration-500 flex items-center justify-center hidden sm:flex"
-          initial={{ opacity: 0 }}
-          whileHover={{ opacity: 0.8 }}
+        {/* Desktop overlay with icons - simplified animations */}
+        <div
+          className="absolute top-0 left-0 w-full h-full bg-[#112240] opacity-0 sm:group-hover:opacity-80 transition-opacity duration-300 flex items-center justify-center hidden sm:flex"
+          style={{ willChange: "opacity" }}
         >
           <div className="flex space-x-4">
-            <motion.button
+            <button
               type="button"
-              className="h-14 w-14 border-2 rounded-full border-[#A3BFFA] hover:border-[#03DAC5] flex items-center justify-center bg-[#1A365D] transition-all duration-300"
+              className="h-14 w-14 border-2 rounded-full border-[#A3BFFA] hover:border-[#03DAC5] flex items-center justify-center bg-[#1A365D] transition-colors duration-200"
               onClick={() => setShowModal(true)}
-              whileHover={{ scale: 1.1, borderColor: "#03DAC5" }}
-              whileTap={{ scale: 0.9 }}
+              aria-label="Preview project"
             >
-              <EyeIcon className="h-10 w-10 text-[#A3BFFA] cursor-pointer hover:text-[#03DAC5] transition-colors duration-300" />
-            </motion.button>
-            <motion.a
+              <EyeIcon className="h-10 w-10 text-[#A3BFFA] cursor-pointer hover:text-[#03DAC5] transition-colors duration-200" />
+            </button>
+            <a
               href={gitUrl}
-              className="h-14 w-14 border-2 rounded-full border-[#A3BFFA] hover:border-[#03DAC5] flex items-center justify-center bg-[#1A365D] transition-all duration-300"
+              className="h-14 w-14 border-2 rounded-full border-[#A3BFFA] hover:border-[#03DAC5] flex items-center justify-center bg-[#1A365D] transition-colors duration-200"
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={{ scale: 1.1, borderColor: "#03DAC5" }}
-              whileTap={{ scale: 0.9 }}
+              aria-label="View code on GitHub"
             >
-              <CodeBracketIcon className="h-10 w-10 text-[#A3BFFA] cursor-pointer hover:text-[#03DAC5] transition-colors duration-300" />
-            </motion.a>
+              <CodeBracketIcon className="h-10 w-10 text-[#A3BFFA] cursor-pointer hover:text-[#03DAC5] transition-colors duration-200" />
+            </a>
           </div>
-        </motion.div>
+        </div>
       </div>
 
-      {/* Mobile action buttons */}
+      {/* Mobile action buttons - simplified */}
       <div className="flex sm:hidden gap-4 px-6 pt-4">
-        <motion.button
-          className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-[#0553B1] to-[#42A5F5] text-white font-semibold py-2 rounded-full shadow-md transition-all"
+        <button
+          className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-[#0553B1] to-[#42A5F5] text-white font-semibold py-2 rounded-full shadow-md"
           onClick={() => setShowModal(true)}
-          whileTap={{ scale: 0.95 }}
         >
           <EyeIcon className="h-5 w-5" />
           Preview
-        </motion.button>
-        <motion.a
+        </button>
+        <a
           href={gitUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex-1 flex items-center justify-center gap-2 bg-[#112240] text-[#03DAC5] border border-[#03DAC5] font-semibold py-2 rounded-full shadow-md transition-all"
-          whileTap={{ scale: 0.95 }}
+          className="flex-1 flex items-center justify-center gap-2 bg-[#112240] text-[#03DAC5] border border-[#03DAC5] font-semibold py-2 rounded-full shadow-md"
         >
           <CodeBracketIcon className="h-5 w-5" />
           Code
-        </motion.a>
+        </a>
       </div>
 
-      <motion.div
-        className="text-white rounded-b-2xl bg-[#1A365D] py-6 px-6 flex-1 flex flex-col"
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.1 }}
-      >
+      <div className="text-white rounded-b-2xl bg-[#1A365D] py-6 px-6 flex-1 flex flex-col">
         <h5 className="text-2xl font-bold mb-2 line-clamp-1">{title}</h5>
         <p className="text-[#A3BFFA] text-base mb-4 line-clamp-3 h-[4.5rem]">
           {description}
@@ -156,25 +159,18 @@ const ProjectCard = ({
         {techStack && techStack.length > 0 && (
           <div className="flex flex-wrap gap-2 mt-auto">
             {techStack.map((tech, idx) => (
-              <motion.span
+              <span
                 key={idx}
                 className="bg-[#112240] text-xs text-[#03DAC5] px-3 py-1 rounded-full font-semibold border border-[#03DAC5]"
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.1 + idx * 0.1 }}
-                whileHover={{ scale: 1.1, backgroundColor: "#0553B1" }}
               >
                 {tech}
-              </motion.span>
+              </span>
             ))}
           </div>
         )}
-      </motion.div>
+      </div>
 
-      {/* Render the modal directly for testing */}
-      {showModal && <ImageModal />}
-
-      {/* Use portal once we're in the browser */}
+      {/* Use portal for modal to avoid z-index issues */}
       {isBrowser && showModal && createPortal(<ImageModal />, document.body)}
     </motion.div>
   );

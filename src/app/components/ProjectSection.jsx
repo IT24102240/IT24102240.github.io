@@ -1,8 +1,8 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import ProjectCard from "./ProjectCard";
 import ProjectTag from "./ProjectTag";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import AnimationWrapper from "./AnimationWrapper";
 
 const projectData = [
@@ -92,17 +92,44 @@ const projectData = [
 
 const ProjectSection = () => {
   const [tag, setTag] = useState("All");
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
-  const handleTagClick = (newtag) => {
+  const handleTagClick = useCallback((newtag) => {
     setTag(newtag);
-  };
+  }, []);
 
   const filteredProjects = projectData.filter((project) =>
     project.tag.includes(tag)
   );
 
+  // Memoize projects to avoid unnecessary re-renders
+  const projectItems = filteredProjects.map((project, index) => (
+    <motion.div
+      key={project.id}
+      initial={{ opacity: 0, y: 20 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.3, delay: Math.min(index * 0.1, 0.3) }}
+      layout
+      style={{
+        willChange: "opacity, transform",
+        contain: "layout",
+      }}
+    >
+      <ProjectCard
+        title={project.title}
+        description={project.description}
+        imgUrl={project.imgUrl}
+        gitUrl={project.gitUrl}
+        previewUrl={project.previewUrl}
+        techStack={project.techStack}
+      />
+    </motion.div>
+  ));
+
   return (
-    <section id="projects">
+    <section id="projects" ref={ref}>
       <AnimationWrapper animation="slide-up">
         <h2 className="text-3xl font-bold text-center mb-8 text-white">
           My Projects
@@ -112,7 +139,7 @@ const ProjectSection = () => {
       <motion.div
         className="text-white flex flex-row justify-center items-center gap-2 py-6"
         initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
         transition={{ duration: 0.5 }}
       >
         <ProjectTag
@@ -135,26 +162,12 @@ const ProjectSection = () => {
       <motion.div
         layout
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+        style={{
+          willChange: "contents",
+          containIntrinsicSize: "auto 1000px",
+        }}
       >
-        {filteredProjects.map((project, index) => (
-          <motion.div
-            key={project.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-            layout
-          >
-            <ProjectCard
-              title={project.title}
-              description={project.description}
-              imgUrl={project.imgUrl}
-              gitUrl={project.gitUrl}
-              previewUrl={project.previewUrl}
-              techStack={project.techStack}
-            />
-          </motion.div>
-        ))}
+        {projectItems}
       </motion.div>
     </section>
   );
