@@ -41,6 +41,19 @@ export default function Home() {
     };
   }, []);
 
+  // Function to handle CV download
+  const handleDownloadCV = () => {
+    // The path to your CV file in the public folder
+    const cvUrl = "Kavindu_Alwis_CV.pdf"; // This is already correct (relative path)
+
+    const link = document.createElement("a");
+    link.href = cvUrl;
+    link.download = "Kavindu_Alwis_CV.pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <main className="flex min-h-screen flex-col bg-[#112240]">
       <AnimatePresence mode="wait">

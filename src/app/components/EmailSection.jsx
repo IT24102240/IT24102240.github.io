@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+// Ensure these imports are correct - they appear to be imported from the public directory
 import GitHubIcon from "../../../public/github-icon.svg";
 import LinkedInIcon from "../../../public/linkedin-icon.svg";
 import Link from "next/link";
