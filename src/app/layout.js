@@ -39,11 +39,8 @@ export default function RootLayout({ children }) {
           crossOrigin="anonymous"
         />
 
-        {/* Add preload hints for important resources and use absolute paths */}
+        {/* Add preload hints for important resources */}
         <link rel="preload" as="image" href="/images/DP.jpeg" />
-
-        {/* Base path for all relative URLs */}
-        <base href="/" />
 
         {/* EmailJS SDK - Add defer attribute and make sure it loads before your app code */}
         <script

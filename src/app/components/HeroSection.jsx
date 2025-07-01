@@ -8,7 +8,7 @@ const HeroSection = () => {
   // Function to handle CV download
   const handleDownloadCV = () => {
     // The path to your CV file in the public folder
-    const cvUrl = "Kavindu_Alwis_CV.pdf"; // Update this with your actual CV filename
+    const cvUrl = "/Kavindu_Alwis_CV.pdf"; // Update this with your actual CV filename
 
     // Create a temporary anchor element
     const link = document.createElement("a");
@@ -160,7 +160,7 @@ const HeroSection = () => {
               className="w-full h-full rounded-full overflow-hidden"
             >
               <Image
-                src="images/Alwis.JPG"
+                src="/images/Alwis.JPG"
                 alt="Hero Image"
                 className="rounded-full object-cover"
                 fill

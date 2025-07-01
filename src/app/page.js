@@ -8,9 +8,8 @@ import EmailSection from "./components/EmailSection";
 import Footer from "./components/Footer";
 import LoadingScreen from "./components/LoadingScreen";
 import ScrollProgressBar from "./components/ScrollProgressBar";
-import { useState, useEffect, lazy, Suspense } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { verifyImages } from "../utils/verifyImages";
 
 // Lazy load components that are below the fold
 const LazyAboutSection = AboutSection;
@@ -22,10 +21,10 @@ export default function Home() {
   const [hasScrolled, setHasScrolled] = useState(false);
 
   useEffect(() => {
-    // Shorter loading screen time (reduced from 1500ms to 800ms)
+    // Shorter loading screen time
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 800);
+    }, 1500);
 
     // Add scroll listener to detect when user has scrolled
     const handleScroll = () => {
@@ -41,26 +40,6 @@ export default function Home() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
-  // Add image verification in development mode
-  useEffect(() => {
-    if (process.env.NODE_ENV === "development") {
-      verifyImages();
-    }
-  }, [isLoading]);
-
-  // Function to handle CV download
-  const handleDownloadCV = () => {
-    // The path to your CV file in the public folder
-    const cvUrl = "Kavindu_Alwis_CV.pdf"; // This is already correct (relative path)
-
-    const link = document.createElement("a");
-    link.href = cvUrl;
-    link.download = "Kavindu_Alwis_CV.pdf";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
 
   return (
     <main className="flex min-h-screen flex-col bg-[#112240]">

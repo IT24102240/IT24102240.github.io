@@ -3,21 +3,13 @@ const nextConfig = {
   output: "export", // Use static export for better performance
   // Enable experimental features for better performance
   experimental: {
-    // Disable optimizeCss as it requires the 'critters' package
-    // optimizeCss: true,
+    optimizeCss: true,
     scrollRestoration: true,
   },
 
   // Image optimization
   images: {
-    unoptimized: true, // Required for static export to work with images
-    domains: ["localhost"], // Add domains you might reference
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "**",
-      },
-    ],
+    formats: ["image/webp", "image/avif"],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
@@ -60,8 +52,33 @@ const nextConfig = {
     return config;
   },
 
-  // Ensure assets are copied to the output directory
-  assetPrefix: "./",
+  // Headers for caching
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          {
+            key: "X-Content-Type-Options",
+            value: "nosniff",
+          },
+          {
+            key: "X-Frame-Options",
+            value: "DENY",
+          },
+        ],
+      },
+      {
+        source: "/static/(.*)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+    ];
+  },
 };
 
-export default nextConfig;
+module.exports = nextConfig;

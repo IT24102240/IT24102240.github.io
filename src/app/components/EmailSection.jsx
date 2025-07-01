@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect } from "react";
-// Ensure these imports are correct - they appear to be imported from the public directory
 import GitHubIcon from "../../../public/github-icon.svg";
 import LinkedInIcon from "../../../public/linkedin-icon.svg";
 import Link from "next/link";
@@ -135,7 +134,7 @@ const EmailSection = () => {
             <p>Thank you for your message. I'll get back to you soon!</p>
             <button
               onClick={() => setEmailSubmitted(false)}
-              className="mt-4 bg-[#03DAC5] text-white py-2 px-4 rounded-2xl hover:bg-[#42A5F5] transition-colors"
+              className="mt-4 bg-green-500 text-white py-2 px-4 rounded-2xl hover:bg-green-600 transition-colors"
             >
               Send another message
             </button>
