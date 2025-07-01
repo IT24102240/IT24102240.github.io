@@ -1,58 +1,42 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "export", // Use static export for better performance
-  // Enable experimental features for better performance
+  // Configure output for better deployment compatibility
+  output: "export",
+
+  // Disable some experimental features that might cause deployment issues
   experimental: {
-    optimizeCss: true,
+    // Keep only stable features
     scrollRestoration: true,
+    // Remove optimizeCss as it can cause issues in some deployment environments
   },
 
-  // Image optimization
+  // Image optimization with more deployment-friendly settings
   images: {
-    formats: ["image/webp", "image/avif"],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
+    formats: ["image/webp"],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256],
+    minimumCacheTTL: 60 * 60 * 24, // 1 day
+    // Enable unoptimized for static export
+    unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+    ],
   },
 
-  // Compiler optimizations
+  // Compiler optimizations that are safe for production
   compiler: {
-    removeConsole: process.env.NODE_ENV === "production",
+    removeConsole:
+      process.env.NODE_ENV === "production"
+        ? {
+            exclude: ["error", "warn"],
+          }
+        : false,
   },
 
-  // Bundle analyzer (enable when needed)
-  ...(process.env.ANALYZE === "true" && {
-    webpack: (config) => {
-      config.plugins.push(
-        new (require("@next/bundle-analyzer"))({
-          enabled: true,
-          openAnalyzer: true,
-        })
-      );
-      return config;
-    },
-  }),
-
-  // Optimize bundle size
-  webpack: (config, { isServer }) => {
-    // Optimize chunks
-    if (!isServer) {
-      config.optimization.splitChunks.cacheGroups = {
-        ...config.optimization.splitChunks.cacheGroups,
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          chunks: "all",
-          name: "vendors",
-          priority: 10,
-          enforce: true,
-        },
-      };
-    }
-
-    return config;
-  },
-
-  // Headers for caching
+  // Keep only essential headers
   async headers() {
     return [
       {
@@ -68,17 +52,19 @@ const nextConfig = {
           },
         ],
       },
-      {
-        source: "/static/(.*)",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, max-age=31536000, immutable",
-          },
-        ],
-      },
     ];
   },
+
+  // Disable webpack optimizations that might cause issues
+  webpack: (config) => {
+    return config;
+  },
+
+  // Make sure paths in the app are handled correctly
+  trailingSlash: true,
+
+  // This ensures assets are referenced correctly in static export
+  assetPrefix: process.env.NODE_ENV === "production" ? "." : "",
 };
 
 module.exports = nextConfig;

@@ -1,12 +1,26 @@
 "use client";
 
 import Image from "next/image";
-import { useState, memo } from "react";
+import { useState, memo, useEffect } from "react";
 
 const OptimizedImage = memo(
   ({ src, alt, width, height, className = "", priority = false, ...props }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(false);
+    const [mounted, setMounted] = useState(false);
+
+    // Handle hydration issues by rendering only on client
+    useEffect(() => {
+      setMounted(true);
+    }, []);
+
+    if (!mounted) {
+      return (
+        <div className={`relative overflow-hidden ${className}`}>
+          <div className="absolute inset-0 bg-gray-200 animate-pulse rounded" />
+        </div>
+      );
+    }
 
     return (
       <div className={`relative overflow-hidden ${className}`}>
@@ -32,6 +46,7 @@ const OptimizedImage = memo(
           className={`transition-opacity duration-300 ${
             isLoading ? "opacity-0" : "opacity-100"
           }`}
+          unoptimized={process.env.NODE_ENV === "production"}
           {...props}
         />
 

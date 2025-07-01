@@ -19,8 +19,12 @@ const LazyEmailSection = EmailSection;
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [hasScrolled, setHasScrolled] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    // Mark as mounted to prevent hydration errors
+    setIsMounted(true);
+
     // Shorter loading screen time
     const timer = setTimeout(() => {
       setIsLoading(false);
@@ -40,6 +44,9 @@ export default function Home() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  // Prevent hydration errors by rendering only after component is mounted
+  if (!isMounted) return null;
 
   return (
     <main className="flex min-h-screen flex-col bg-[#112240]">
