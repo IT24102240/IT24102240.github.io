@@ -3,6 +3,15 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Flutter-inspired color palette */
+  --color-primary: #0553b1; /* Flutter primary blue */
+  --color-secondary: #42a5f5; /* Lighter blue */
+  --color-accent: #03dac5; /* Flutter teal accent */
+  --color-dark: #112240; /* Deep blue background */
+  --color-light: #f5f9fc; /* Light bluish white */
+  --color-text-dark: #15172a; /* Dark blue text */
+  --color-text-light: #e9f2ff; /* Light blue-white text */
 }
 
 @theme inline {
@@ -14,8 +23,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #112240;
+    --foreground: #e9f2ff;
   }
 }
 
