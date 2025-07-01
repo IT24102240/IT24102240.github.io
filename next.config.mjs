@@ -52,33 +52,9 @@ const nextConfig = {
     return config;
   },
 
-  // Headers for caching
-  async headers() {
-    return [
-      {
-        source: "/(.*)",
-        headers: [
-          {
-            key: "X-Content-Type-Options",
-            value: "nosniff",
-          },
-          {
-            key: "X-Frame-Options",
-            value: "DENY",
-          },
-        ],
-      },
-      {
-        source: "/static/(.*)",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, max-age=31536000, immutable",
-          },
-        ],
-      },
-    ];
-  },
+  // Headers are removed as they don't work with static exports
+  // If you need headers, consider using a hosting service that allows custom headers
+  // or switch to a server-rendered deployment
 };
 
 export default nextConfig;
