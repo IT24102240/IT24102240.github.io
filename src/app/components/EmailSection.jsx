@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import GitHubIcon from "../../../public/github-icon.svg";
 import LinkedInIcon from "../../../public/linkedin-icon.svg";
 import Link from "next/link";
@@ -11,10 +11,18 @@ const EmailSection = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
+    name: "", // Changed from subject to name
     email: "",
-    subject: "",
     message: "",
   });
+
+  // Initialize EmailJS on component mount
+  useEffect(() => {
+    if (window.emailjs) {
+      // Add your EmailJS public key here
+      window.emailjs.init("AFTl812YOCGalX4YY");
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,40 +38,32 @@ const EmailSection = () => {
     setError("");
 
     // Form validation
-    if (!formData.email || !formData.subject || !formData.message) {
+    if (!formData.name || !formData.email || !formData.message) {
       setError("Please fill in all fields");
       setIsLoading(false);
       return;
     }
 
     try {
-      const response = await fetch("/api/send", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      // The templateParams object should match your EmailJS template variables
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        message: formData.message,
+      };
 
-      // Check if the response is ok before trying to parse JSON
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Server response:", response.status, errorText);
-        throw new Error(
-          `Server responded with ${response.status}: ${errorText.substring(
-            0,
-            100
-          )}...`
-        );
-      }
+      // Send email using EmailJS
+      const result = await window.emailjs.send(
+        "service_ygka308", // Your EmailJS service ID
+        "template_ycim9fn", // Your EmailJS template ID
+        templateParams
+      );
 
-      const data = await response.json();
-
-      if (data.success) {
+      if (result.status === 200) {
         setEmailSubmitted(true);
-        setFormData({ email: "", subject: "", message: "" });
+        setFormData({ name: "", email: "", message: "" });
       } else {
-        setError(data.error || "Something went wrong. Please try again.");
+        throw new Error("Failed to send message");
       }
     } catch (error) {
       setError(`Failed to send email: ${error.message}`);
@@ -128,6 +128,22 @@ const EmailSection = () => {
               </div>
             )}
             <label
+              htmlFor="name"
+              className="text-white block text-sm font-medium"
+            >
+              Your Name
+            </label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              value={formData.name}
+              onChange={handleChange}
+              className="p-2.5 bg-[#1A365D] border border-[#42A5F5] placeholder-[#A3BFFA] text-gray-100 text-sm rounded-2xl block w-full"
+              placeholder="John Doe"
+            />
+
+            <label
               htmlFor="email"
               className="text-white block text-sm font-medium"
             >
@@ -141,22 +157,6 @@ const EmailSection = () => {
               onChange={handleChange}
               className="p-2.5 bg-[#1A365D] border border-[#42A5F5] placeholder-[#A3BFFA] text-gray-100 text-sm rounded-2xl block w-full"
               placeholder="john@example.com"
-            />
-
-            <label
-              htmlFor="subject"
-              className="text-white block text-sm font-medium"
-            >
-              Subject
-            </label>
-            <input
-              id="subject"
-              name="subject"
-              type="text"
-              value={formData.subject}
-              onChange={handleChange}
-              className="p-2.5 bg-[#1A365D] border border-[#42A5F5] placeholder-[#A3BFFA] text-gray-100 text-sm rounded-2xl block w-full"
-              placeholder="Just saying hi"
             />
 
             <label
