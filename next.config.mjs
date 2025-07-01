@@ -11,7 +11,13 @@ const nextConfig = {
   // Image optimization
   images: {
     unoptimized: true, // Required for static export to work with images
-    formats: ["image/webp", "image/avif"],
+    domains: ["localhost"], // Add domains you might reference
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+    ],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
@@ -54,9 +60,8 @@ const nextConfig = {
     return config;
   },
 
-  // Headers are removed as they don't work with static exports
-  // If you need headers, consider using a hosting service that allows custom headers
-  // or switch to a server-rendered deployment
+  // Ensure assets are copied to the output directory
+  assetPrefix: "./",
 };
 
 export default nextConfig;

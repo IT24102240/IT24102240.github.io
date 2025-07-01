@@ -10,6 +10,7 @@ import LoadingScreen from "./components/LoadingScreen";
 import ScrollProgressBar from "./components/ScrollProgressBar";
 import { useState, useEffect, lazy, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { verifyImages } from "../utils/verifyImages";
 
 // Lazy load components that are below the fold
 const LazyAboutSection = AboutSection;
@@ -40,6 +41,13 @@ export default function Home() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  // Add image verification in development mode
+  useEffect(() => {
+    if (process.env.NODE_ENV === "development") {
+      verifyImages();
+    }
+  }, [isLoading]);
 
   // Function to handle CV download
   const handleDownloadCV = () => {
