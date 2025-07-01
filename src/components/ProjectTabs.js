@@ -94,16 +94,4 @@ const ProjectTabs = ({ projects }) => {
   );
 };
 
-// Fix for line 13:25 - Add displayName to the component
-const TabNavItem = ({ id, title, activeTab, setActiveTab }) => {
-  // ...component code...
-};
-TabNavItem.displayName = "TabNavItem";
-
-// Fix for line 22:20 - Add displayName to the component
-const TabContent = ({ id, activeTab, children }) => {
-  // ...component code...
-};
-TabContent.displayName = "TabContent";
-
 export default memo(ProjectTabs);

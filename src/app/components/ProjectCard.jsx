@@ -64,9 +64,11 @@ const ProjectCard = ({
           className="w-[90%] max-w-5xl max-h-[80vh] relative"
           onClick={(e) => e.stopPropagation()}
         >
-          <img
+          <Image
             src={imgUrl}
             alt={title}
+            width={1200}
+            height={800}
             className="w-full h-auto object-contain rounded-lg shadow-2xl"
             loading="eager"
             onLoad={() => setImageLoaded(true)}
@@ -91,12 +93,15 @@ const ProjectCard = ({
       }}
     >
       <div className="h-52 md:h-72 relative group flex items-center justify-center overflow-hidden">
-        {/* Using regular img tag for better static deployment compatibility */}
-        <img
+        <Image
           src={imgUrl}
           alt={title}
+          width={600}
+          height={400}
           className="w-full h-full object-cover rounded-t-2xl"
           loading="lazy"
+          placeholder="blur"
+          blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzAwIiBoZWlnaHQ9IjQ3NSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMUEzNjVEIi8+PC9zdmc+"
           onLoad={() => setImageLoaded(true)}
         />
         {/* Desktop overlay with icons - simplified animations */}
