@@ -18,10 +18,24 @@ const EmailSection = () => {
 
   // Initialize EmailJS on component mount
   useEffect(() => {
-    if (window.emailjs) {
-      // Add your EmailJS public key here
-      window.emailjs.init("AFTl812YOCGalX4YY");
-    }
+    // Import EmailJS dynamically to ensure it's only loaded in the browser
+    const loadEmailJS = async () => {
+      try {
+        // Check if the script is already loaded
+        if (!window.emailjs) {
+          const emailjs = await import("@emailjs/browser");
+          window.emailjs = emailjs;
+        }
+
+        // Initialize with your public key
+        window.emailjs.init("AFTl812YOCGalX4YY");
+        console.log("EmailJS initialized successfully");
+      } catch (error) {
+        console.error("Failed to initialize EmailJS:", error);
+      }
+    };
+
+    loadEmailJS();
   }, []);
 
   const handleChange = (e) => {
@@ -45,6 +59,11 @@ const EmailSection = () => {
     }
 
     try {
+      // Check if emailjs is available
+      if (!window.emailjs) {
+        throw new Error("EmailJS is not loaded yet. Please try again.");
+      }
+
       // The templateParams object should match your EmailJS template variables
       const templateParams = {
         from_name: formData.name,
@@ -52,10 +71,10 @@ const EmailSection = () => {
         message: formData.message,
       };
 
-      // Send email using EmailJS
+      // Use emailjs directly instead of window.emailjs for better reliability
       const result = await window.emailjs.send(
-        "service_ygka308", // Your EmailJS service ID
-        "template_ycim9fn", // Your EmailJS template ID
+        "service_ygka308",
+        "template_ycim9fn",
         templateParams
       );
 
