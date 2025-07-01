@@ -36,24 +36,8 @@ const nextConfig = {
         : false,
   },
 
-  // Keep only essential headers
-  async headers() {
-    return [
-      {
-        source: "/(.*)",
-        headers: [
-          {
-            key: "X-Content-Type-Options",
-            value: "nosniff",
-          },
-          {
-            key: "X-Frame-Options",
-            value: "DENY",
-          },
-        ],
-      },
-    ];
-  },
+  // Headers removed for static export compatibility
+  // See: https://nextjs.org/docs/messages/export-no-custom-routes
 
   // Disable webpack optimizations that might cause issues
   webpack: (config) => {
@@ -63,8 +47,8 @@ const nextConfig = {
   // Make sure paths in the app are handled correctly
   trailingSlash: true,
 
-  // This ensures assets are referenced correctly in static export
-  assetPrefix: process.env.NODE_ENV === "production" ? "." : "",
+  // Fix assetPrefix format for font compatibility
+  assetPrefix: process.env.NODE_ENV === "production" ? "/" : "",
 };
 
 module.exports = nextConfig;
