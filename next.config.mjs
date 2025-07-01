@@ -3,7 +3,8 @@ const nextConfig = {
   output: "export", // Use static export for better performance
   // Enable experimental features for better performance
   experimental: {
-    optimizeCss: true,
+    // Disable optimizeCss as it requires the 'critters' package
+    // optimizeCss: true,
     scrollRestoration: true,
   },
 

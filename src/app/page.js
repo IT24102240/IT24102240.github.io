@@ -21,10 +21,10 @@ export default function Home() {
   const [hasScrolled, setHasScrolled] = useState(false);
 
   useEffect(() => {
-    // Shorter loading screen time
+    // Shorter loading screen time (reduced from 1500ms to 800ms)
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 1500);
+    }, 800);
 
     // Add scroll listener to detect when user has scrolled
     const handleScroll = () => {

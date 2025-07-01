@@ -42,7 +42,7 @@ const NavLink = ({ href, title, isActive = false, onClick }) => {
       </motion.span>
 
       {/* Animated underline effect */}
-      <span className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-purple-500 to-blue-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+      <span className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-purple-500 to-blue-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left transform-gpu"></span>
     </Link>
   );
 };

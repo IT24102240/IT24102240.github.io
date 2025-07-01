@@ -147,10 +147,12 @@ function AboutSection() {
           >
             <Image
               src="images/about-image.png"
-              width={500}
-              height={500}
+              width={400}
+              height={400}
               alt="About section image"
               className="rounded-2xl shadow-2xl transition-transform duration-300 hover:shadow-[#03DAC5]/40"
+              loading="lazy"
+              sizes="(max-width: 768px) 100vw, 400px"
             />
           </motion.div>
         </AnimationWrapper>
