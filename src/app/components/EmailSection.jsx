@@ -1,5 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import GitHubIcon from "../../../public/github-icon.svg";
+import LinkedInIcon from "../../../public/linkedin-icon.svg";
 import Link from "next/link";
 import Image from "next/image";
 import { EnvelopeIcon } from "@heroicons/react/24/outline";
@@ -93,7 +95,7 @@ const EmailSection = () => {
   return (
     <section
       id="contact"
-      className="grid md:grid-cols-2 my-8 md:my-8 py-12 gap-4"
+      className="grid md:grid-cols-2 my-4 md:my-8 py-8 md:py-12 gap-4"
     >
       <div>
         <h5 className="text-xl font-bold text-white my-2">Let's Connect</h5>
@@ -113,16 +115,11 @@ const EmailSection = () => {
 
         <div className="socials flex flex-row gap-2">
           <Link href={"https://github.com/kavindualwis"}>
-            <Image
-              src="/github-icon.svg"
-              alt="Github icon"
-              width={32}
-              height={32}
-            />
+            <Image src={GitHubIcon} alt="Github icon" width={32} height={32} />
           </Link>
           <Link href={"https://www.linkedin.com/in/kavindualwis/"}>
             <Image
-              src="/linkedin-icon.svg"
+              src={LinkedInIcon}
               alt="LinkedIn icon"
               width={32}
               height={32}

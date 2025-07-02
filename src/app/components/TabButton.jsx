@@ -2,11 +2,12 @@ import React from "react";
 
 const TabButton = ({ active, selectTab, children }) => {
   const buttonClasses = active
-    ? "text-white border-b border-[#03DAC5]"
-    : "text-[#A3BFFA]";
+    ? "text-white border-b-2 border-[#03DAC5] font-bold"
+    : "text-[#A3BFFA] hover:text-white";
+
   return (
-    <button onClick={selectTab} className="cursor-pointer">
-      <p className={`mr-3 font-semibold hover:text-white ${buttonClasses}`}>
+    <button onClick={selectTab} className="cursor-pointer px-2 py-1">
+      <p className={`text-lg transition-all duration-300 ${buttonClasses}`}>
         {children}
       </p>
     </button>

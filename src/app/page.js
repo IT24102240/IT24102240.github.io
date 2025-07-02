@@ -1,7 +1,8 @@
 "use client";
+
 import Image from "next/image";
 import HeroSection from "./components/HeroSection";
-import Navbar from "./components/NavBar";
+import NavBar from "./components/NavBar";
 import AboutSection from "./components/AboutSection";
 import ProjectSection from "./components/ProjectSection";
 import EmailSection from "./components/EmailSection";
@@ -16,25 +17,28 @@ const LazyAboutSection = AboutSection;
 const LazyProjectSection = ProjectSection;
 const LazyEmailSection = EmailSection;
 
-export default function Home() {
+function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [hasScrolled, setHasScrolled] = useState(false);
 
   useEffect(() => {
-    // Shorter loading screen time
+    // Simulate loading time for better user experience
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 1500);
+    }, 1800);
 
-    // Add scroll listener to detect when user has scrolled
+    // Track scrolling
     const handleScroll = () => {
       if (window.scrollY > 100) {
         setHasScrolled(true);
+      } else {
+        setHasScrolled(false);
       }
     };
 
     window.addEventListener("scroll", handleScroll);
 
+    // Clean up
     return () => {
       clearTimeout(timer);
       window.removeEventListener("scroll", handleScroll);
@@ -42,57 +46,79 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="flex min-h-screen flex-col bg-[#112240]">
+    <main className="flex min-h-screen flex-col bg-gradient-to-b from-[#0a192f] to-[#112240]">
       <AnimatePresence mode="wait">
         {isLoading ? (
           <LoadingScreen key="loading" />
         ) : (
           <>
-            <Navbar />
+            <NavBar />
             <ScrollProgressBar />
             <motion.div
-              className="container mt-24 mx-auto px-12 py-4"
+              className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
               <HeroSection />
 
-              <div className="content-visibility-auto">
+              <motion.div
+                className="content-visibility-auto"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.6 }}
+              >
                 <LazyAboutSection />
-              </div>
+              </motion.div>
 
-              <div className="content-visibility-auto">
+              <motion.div
+                className="content-visibility-auto"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+              >
                 <LazyProjectSection />
-              </div>
+              </motion.div>
 
-              <div className="content-visibility-auto">
+              <motion.div
+                className="content-visibility-auto"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+              >
                 <LazyEmailSection />
-              </div>
+              </motion.div>
 
               <Footer />
             </motion.div>
-            {/* Floating WhatsApp Button - simpler animation */}
+
             <motion.a
               href="https://wa.me/94776892127"
               target="_blank"
               rel="noopener noreferrer"
-              className="fixed z-50 bottom-6 right-6 bg-[#03DAC5] hover:bg-[#42A5F5] rounded-full shadow-lg p-4 flex items-center justify-center transition-colors animate-gpu"
+              className="fixed z-50 bottom-6 right-6 bg-[#03DAC5] hover:bg-[#42A5F5] rounded-full shadow-lg p-4 flex items-center justify-center transition-all duration-300 transform hover:scale-110 active:scale-95 gpu-accelerated"
               aria-label="Chat on WhatsApp"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
               transition={{
                 delay: 1,
-                duration: 0.3,
+                duration: 0.4,
+                type: "spring",
+                stiffness: 200,
               }}
-              whileHover={{ scale: 1.05 }}
+              whileHover={{
+                scale: 1.1,
+                boxShadow: "0 10px 25px rgba(3, 218, 197, 0.5)",
+              }}
               whileTap={{ scale: 0.95 }}
             >
-              {/* WhatsApp SVG icon */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width={32}
-                height={32}
+                width="32"
+                height="32"
                 fill="white"
                 viewBox="0 0 24 24"
                 aria-hidden="true"
@@ -106,3 +132,5 @@ export default function Home() {
     </main>
   );
 }
+
+export default Home;

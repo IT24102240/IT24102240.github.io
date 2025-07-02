@@ -40,7 +40,7 @@ export default function RootLayout({ children }) {
         />
 
         {/* Add preload hints for important resources */}
-        <link rel="preload" as="image" href="/images/DP.jpeg" />
+        <link rel="preload" as="image" href="images/DP.jpeg" />
 
         {/* EmailJS SDK - Add defer attribute and make sure it loads before your app code */}
         <script

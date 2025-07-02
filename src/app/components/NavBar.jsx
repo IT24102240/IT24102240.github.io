@@ -1,57 +1,21 @@
 "use client";
+
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import NavLink from "./NavLink";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
+import { motion, AnimatePresence } from "framer-motion";
 import MenuOverlay from "./MenuOverlay";
-import { motion } from "framer-motion";
 
-const navLinks = [
-  {
-    title: "About",
-    path: "#about",
-  },
-  {
-    title: "Projects",
-    path: "#projects",
-  },
-  {
-    title: "Contact",
-    path: "#contact",
-  },
-];
-
-const Navbar = () => {
-  const [isNavbarOpen, setNavbarOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState("");
+const NavBar = () => {
+  const [navbarOpen, setNavbarOpen] = useState(false);
+  const [scrolling, setScrolling] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      // Check if page is scrolled
-      const isScrolled = window.scrollY > 10;
-      if (isScrolled !== scrolled) {
-        setScrolled(isScrolled);
-      }
-
-      // Determine which section is currently in view
-      const sections = navLinks.map((link) => link.path.substring(1));
-
-      // Find the section that's most in view
-      const currentSection = sections.reduce((current, section) => {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          // Check if element is in viewport and closer to the top
-          if (rect.top <= 100 && rect.bottom >= 100) {
-            return section;
-          }
-        }
-        return current;
-      }, activeSection);
-
-      if (currentSection !== activeSection) {
-        setActiveSection(currentSection);
+      if (window.scrollY > 20) {
+        setScrolling(true);
+      } else {
+        setScrolling(false);
       }
     };
 
@@ -59,101 +23,133 @@ const Navbar = () => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [scrolled, activeSection]);
+  }, []);
 
-  // Function to close the mobile menu
-  const handleNavLinkClick = () => {
-    if (isNavbarOpen) {
-      setNavbarOpen(false);
-    }
+  const navLinks = [
+    {
+      title: "Home",
+      path: "#",
+    },
+    {
+      title: "About",
+      path: "#about",
+    },
+    {
+      title: "Projects",
+      path: "#projects",
+    },
+    {
+      title: "Contact",
+      path: "#contact",
+    },
+  ];
+
+  const resumeLink = {
+    title: "Resume",
+    path: "/Kavindu_Alwis_CV.pdf",
+    isResumeLink: true,
+  };
+
+  const navbarVariants = {
+    hidden: { opacity: 0, y: -25 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeInOut",
+      },
+    },
   };
 
   return (
-    <motion.nav
-      className={`fixed top-0 left-0 right-0 z-50 ${
-        scrolled ? "bg-[#112240]/80 backdrop-blur-md shadow-lg" : "bg-[#112240]"
+    <motion.header
+      initial="hidden"
+      animate="visible"
+      variants={navbarVariants}
+      className={`fixed top-0 left-0 right-0 z-40 ${
+        scrolling
+          ? "bg-[#0a192f]/90 backdrop-blur-md border-b border-[#112240]/50 shadow-lg"
+          : "bg-transparent"
       } transition-all duration-300`}
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{
-        type: "spring",
-        stiffness: 260,
-        damping: 20,
-        delay: 0.1,
-      }}
     >
-      <div className="flex flex-wrap items-center justify-between mx-auto px-4 py-3">
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <Link href={"/"} className="text-2xl md:text-3xl font-bold">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#42A5F5] to-[#03DAC5]">
-              ALWIS
-            </span>
-            <span className="text-white">DEV</span>
+      <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between py-4">
+          <Link href={"/"}>
+            <motion.div
+              className="text-white font-bold text-xl md:text-2xl"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              ALWIS<span className="text-[#03DAC5]">DEV</span>
+            </motion.div>
           </Link>
-        </motion.div>
-
-        {/* Mobile menu button */}
-        <div className="mobile-menu block md:hidden">
-          <motion.button
-            onClick={() => setNavbarOpen(!isNavbarOpen)}
-            className="flex items-center px-3 py-2 rounded-md bg-[#0553B1]/70 text-slate-200 hover:text-white hover:bg-[#42A5F5]"
-            whileTap={{ scale: 0.9 }}
-          >
-            {!isNavbarOpen ? (
-              <Bars3Icon className="h-5 w-5" />
-            ) : (
-              <XMarkIcon className="h-5 w-5" />
-            )}
-          </motion.button>
-        </div>
-
-        {/* Desktop menu */}
-        <div className="menu hidden md:block md:w-auto" id="navbar">
-          <motion.ul
-            className="flex items-center p-4 md:p-0 md:flex-row md:space-x-8"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-          >
+          <div className="hidden md:flex md:items-center md:gap-x-6">
             {navLinks.map((link, index) => (
-              <motion.li
+              <motion.div
                 key={index}
-                initial={{ opacity: 0, y: -10 }}
+                initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.2, delay: 0.1 * index }}
+                transition={{ duration: 0.3, delay: index * 0.1 + 0.2 }}
               >
-                <NavLink
-                  href={link.path}
-                  title={link.title}
-                  isActive={activeSection === link.path.substring(1)}
-                />
-              </motion.li>
+                <NavLink href={link.path} title={link.title} />
+              </motion.div>
             ))}
-          </motion.ul>
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: navLinks.length * 0.1 + 0.2 }}
+            >
+              <NavLink
+                href={resumeLink.path}
+                title={resumeLink.title}
+                isResumeLink={resumeLink.isResumeLink}
+              />
+            </motion.div>
+          </div>
+          <div className="md:hidden">
+            <button
+              onClick={() => setNavbarOpen(!navbarOpen)}
+              className="flex items-center px-3 py-2 text-[#03DAC5] hover:text-[#42A5F5] transition-colors duration-300"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                {navbarOpen ? (
+                  <>
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                  </>
+                ) : (
+                  <>
+                    <line x1="4" y1="8" x2="20" y2="8" />
+                    <line x1="4" y1="16" x2="20" y2="16" />
+                  </>
+                )}
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
-
-      {/* Mobile menu overlay */}
-      {isNavbarOpen && (
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: "auto" }}
-          exit={{ opacity: 0, height: 0 }}
-          transition={{ duration: 0.3 }}
-        >
+      <AnimatePresence>
+        {navbarOpen && (
           <MenuOverlay
             links={navLinks}
-            activeSection={activeSection}
-            onLinkClick={handleNavLinkClick}
+            resumeLink={resumeLink}
+            setNavbarOpen={setNavbarOpen}
           />
-        </motion.div>
-      )}
-    </motion.nav>
+        )}
+      </AnimatePresence>
+    </motion.header>
   );
 };
 
-export default Navbar;
+export default NavBar;

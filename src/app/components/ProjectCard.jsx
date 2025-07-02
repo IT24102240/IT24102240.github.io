@@ -92,18 +92,20 @@ const ProjectCard = ({
         transformStyle: "preserve-3d",
       }}
     >
-      <div className="h-52 md:h-72 relative group flex items-center justify-center overflow-hidden">
+      {/* Fixed aspect ratio container for consistent image display */}
+      <div className="aspect-[16/9] relative group overflow-hidden bg-[#112240]">
         <Image
           src={imgUrl}
           alt={title}
-          width={600}
-          height={400}
-          className="w-full h-full object-cover rounded-t-2xl"
+          fill={true}
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          className="object-cover object-center rounded-t-2xl transition-transform duration-300 group-hover:scale-105"
           loading="lazy"
           placeholder="blur"
           blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzAwIiBoZWlnaHQ9IjQ3NSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMUEzNjVEIi8+PC9zdmc+"
           onLoad={() => setImageLoaded(true)}
         />
+
         {/* Desktop overlay with icons - simplified animations */}
         <div
           className="absolute top-0 left-0 w-full h-full bg-[#112240] opacity-0 sm:group-hover:opacity-80 transition-opacity duration-300 flex items-center justify-center hidden sm:flex"

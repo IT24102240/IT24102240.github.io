@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState, useEffect } from "react";
 import { motion, useScroll } from "framer-motion";
 
@@ -48,8 +49,9 @@ const ScrollProgressBar = () => {
           viewBox="0 0 24 24"
           stroke="currentColor"
         >
-          <path d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+          <path d="M5 10l7-7m0 0l7 7m-7-7v18" />
         </svg>
+
         <svg className="absolute" width="44" height="44" viewBox="0 0 44 44">
           <circle
             className="stroke-[#42A5F5] opacity-25"

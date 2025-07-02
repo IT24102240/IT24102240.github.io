@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useTransition } from "react";
-import Image from "next/image";
 import TabButton from "./TabButton";
 import { motion } from "framer-motion";
 import AnimationWrapper from "./AnimationWrapper";
@@ -134,79 +133,99 @@ function AboutSection() {
       setTab(id);
     });
   };
+
   return (
     <section
       id="about"
-      className="text-white w-full bg-gradient-to-br from-[#112240] via-[#1A365D] to-[#0553B1] rounded-3xl shadow-xl my-12"
+      className="text-white w-full bg-gradient-to-br from-[#112240] via-[#1A365D] to-[#0553B1] rounded-[30px] shadow-xl my-12 relative overflow-hidden"
     >
-      <div className="md:grid md:grid-cols-2 gap-8 lg:gap-8 xl:gap-8 items-center py-4 px-4 sm:py-16 xl:px-16">
-        <AnimationWrapper animation="slide-right">
+      {/* Smoother decorative elements - repositioned to avoid sharp corners */}
+      <div
+        className="absolute top-0 right-0 w-96 h-96 bg-[#03DAC5]/10 rounded-full blur-3xl opacity-50"
+        style={{ transform: "translate(20%, -20%)" }}
+      ></div>
+
+      <div
+        className="absolute bottom-0 left-0 w-96 h-96 bg-[#42A5F5]/10 rounded-full blur-3xl opacity-50"
+        style={{ transform: "translate(-20%, 20%)" }}
+      ></div>
+
+      <div className="relative py-12 px-6 md:px-12 lg:px-16 max-w-4xl mx-auto z-10">
+        <AnimationWrapper animation="slide-up">
+          <div className="text-center mb-10">
+            <h2 className="text-4xl font-bold mb-6 inline-block relative">
+              About Me
+              <span className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-[#03DAC5] to-transparent"></span>
+            </h2>
+
+            <p className="text-base md:text-lg leading-relaxed text-gray-300">
+              Hi, I'm{" "}
+              <strong className="text-[#03DAC5]">Kavindu Alwis</strong>, a
+              self-taught{" "}
+              <strong className="text-[#03DAC5]">Flutter developer</strong> and{" "}
+              <strong className="text-[#03DAC5]">
+                Software Engineering undergraduate at SLIIT
+              </strong>
+              . I have 2+ years of experience building mobile apps using{" "}
+              <strong className="text-[#03DAC5]">
+                Flutter, Dart, and Firebase
+              </strong>
+              . I'm also diving into{" "}
+              <strong className="text-[#03DAC5]">Node.js</strong>,{" "}
+              <strong className="text-[#03DAC5]">MongoDB</strong>, and{" "}
+              <strong className="text-[#03DAC5]">AI/ML with Python</strong>. I
+              enjoy solving real-world problems, exploring IoT, and constantly
+              pushing my limits to become a top-tier developer. Let's build
+              something great together!
+            </p>
+          </div>
+        </AnimationWrapper>
+
+        <AnimationWrapper animation="fade" delay={0.2}>
+          {/* Tab buttons with improved styling */}
+          <div className="flex flex-wrap justify-center gap-2 md:gap-4 mb-8 px-4">
+            {TAB_DATA.map((tabItem) => (
+              <TabButton
+                key={tabItem.id}
+                selectTab={() => handleTabChange(tabItem.id)}
+                active={tab === tabItem.id}
+              >
+                {tabItem.title}
+              </TabButton>
+            ))}
+          </div>
+
+          {/* Content card with subtle animation */}
           <motion.div
-            whileHover={{ scale: 1.02 }}
+            className="bg-[#112240]/60 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-[#03DAC5]/20"
+            key={tab}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
           >
-            <Image
-              src="/images/about-image.png"
-              width={500}
-              height={500}
-              alt="About section image"
-              className="rounded-2xl shadow-2xl transition-transform duration-300 hover:shadow-[#03DAC5]/40"
-            />
+            {TAB_DATA.find((t) => t.id === tab).content}
           </motion.div>
         </AnimationWrapper>
 
-        <div className="mt-4 md:mt-0 text-left flex-col h-full">
-          <AnimationWrapper animation="slide-left">
-            <h2 className="text-4xl font-bold text-white mb-4">About Me</h2>
-            <p className="text-base md:text-lg leading-relaxed text-gray-300">
-              Hi, I'm <strong>Kavindu Alwis</strong>, a self-taught{" "}
-              <strong>Flutter developer</strong> and{" "}
-              <strong>Software Engineering undergraduate at SLIIT</strong>. I
-              have 2+ years of experience building mobile apps using{" "}
-              <strong>Flutter, Dart, and Firebase</strong>. I'm also diving into{" "}
-              <strong>Node.js</strong>, <strong>MongoDB</strong>, and{" "}
-              <strong>AI/ML with Python</strong>. I enjoy solving real-world
-              problems, exploring IoT, and constantly pushing my limits to
-              become a top-tier developer. Let's build something great together!
-            </p>
-          </AnimationWrapper>
-
-          <AnimationWrapper animation="fade" delay={0.2}>
-            <div className="flex flex-row justify-center mt-8">
-              <TabButton
-                selectTab={() => handleTabChange("skills")}
-                active={tab === "skills"}
+        {/* Skills visualization (only shown on skills tab) */}
+        {tab === "skills" && (
+          <motion.div
+            className="mt-8 flex flex-wrap justify-center gap-2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+          >
+            {["Flutter", "Dart", "Firebase", "Node.js", "MongoDB", "Java", "Python", "Git"].map((skill) => (
+              <div
+                key={skill}
+                className="px-4 py-2 bg-[#1A365D] rounded-full text-sm font-medium border border-[#03DAC5]/30"
               >
-                {" "}
-                Skills{" "}
-              </TabButton>
-              <TabButton
-                selectTab={() => handleTabChange("education")}
-                active={tab === "education"}
-              >
-                {" "}
-                Education{" "}
-              </TabButton>
-              <TabButton
-                selectTab={() => handleTabChange("experience")}
-                active={tab === "experience"}
-              >
-                {" "}
-                Experience{" "}
-              </TabButton>
-            </div>
-            <motion.div
-              className="mt-8"
-              key={tab}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-            >
-              {TAB_DATA.find((t) => t.id == tab).content}
-            </motion.div>
-          </AnimationWrapper>
-        </div>
+                {skill}
+              </div>
+            ))}
+          </motion.div>
+        )}
       </div>
     </section>
   );

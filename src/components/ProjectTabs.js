@@ -18,7 +18,6 @@ const ProjectSkeleton = memo(() => (
     <div className="h-32 bg-gray-200 rounded"></div>
   </div>
 ));
-ProjectSkeleton.displayName = "ProjectSkeleton";
 
 const ProjectTab = memo(({ project, isActive, onClick, index }) => (
   <motion.button
@@ -37,7 +36,6 @@ const ProjectTab = memo(({ project, isActive, onClick, index }) => (
     {project.name}
   </motion.button>
 ));
-ProjectTab.displayName = "ProjectTab";
 
 const ProjectTabs = ({ projects }) => {
   const [activeTab, setActiveTab] = useState(0);
