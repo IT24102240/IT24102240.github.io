@@ -18,12 +18,10 @@ const ProjectCard = ({
   const [isBrowser, setIsBrowser] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
 
-  // Handle mounting for client-side rendering
   useEffect(() => {
     setIsBrowser(true);
   }, []);
 
-  // Prevent scrolling when modal is open
   useEffect(() => {
     if (showModal) {
       document.body.style.overflow = "hidden";
@@ -36,143 +34,168 @@ const ProjectCard = ({
     };
   }, [showModal]);
 
-  // Create a modal component that is conditionally rendered
   const ImageModal = () => {
     if (!showModal) return null;
 
     return (
-      <div
-        className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 backdrop-blur-sm"
+      <motion.div
+        className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 backdrop-blur-md"
         onClick={() => setShowModal(false)}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
       >
         <div className="absolute inset-0" />
-        <button
-          className="absolute top-6 right-8 text-white text-5xl font-bold z-[10000]"
+        <motion.button
+          className="absolute top-6 right-8 text-white text-5xl font-bold z-[10000] hover:scale-110 transition-transform"
           onClick={(e) => {
             e.stopPropagation();
             setShowModal(false);
           }}
+          whileHover={{ scale: 1.2 }}
+          whileTap={{ scale: 0.9 }}
         >
           &times;
-        </button>
+        </motion.button>
 
         <h3 className="absolute top-6 left-8 text-white text-2xl font-bold z-[10000]">
           {title}
         </h3>
 
-        <div
+        <motion.div
           className="w-[90%] max-w-5xl max-h-[80vh] relative"
           onClick={(e) => e.stopPropagation()}
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: "spring", stiffness: 300, damping: 30 }}
         >
           <Image
             src={imgUrl}
             alt={title}
             width={1200}
             height={800}
-            className="w-full h-auto object-contain rounded-lg shadow-2xl"
+            className="w-full h-auto object-contain rounded-2xl shadow-2xl"
             loading="eager"
             onLoad={() => setImageLoaded(true)}
           />
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     );
   };
 
   return (
     <motion.div
-      className="rounded-2xl shadow-lg bg-[#1A365D] overflow-hidden flex flex-col h-full"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+      className="group relative overflow-hidden flex flex-col h-full transition-all duration-300"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
       whileHover={{
-        scale: 1.02,
-        transition: { duration: 0.2 },
+        scale: 1.08,
+        y: -12,
       }}
-      style={{
-        willChange: "transform",
-        transformStyle: "preserve-3d",
-      }}
+      transition={{ duration: 0.3 }}
     >
-      {/* Fixed aspect ratio container for consistent image display */}
-      <div className="aspect-[16/9] relative group overflow-hidden bg-[#112240]">
-        <Image
-          src={imgUrl}
-          alt={title}
-          fill={true}
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          className="object-cover object-center rounded-t-2xl transition-transform duration-300 group-hover:scale-105"
-          loading="lazy"
-          placeholder="blur"
-          blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzAwIiBoZWlnaHQ9IjQ3NSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMUEzNjVEIi8+PC9zdmc+"
-          onLoad={() => setImageLoaded(true)}
-        />
+      {/* Glowing Border Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/30 via-purple-600/20 to-cyan-600/30 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl -z-10" />
+      
+      {/* Glass Container */}
+      <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl border border-slate-700/40 group-hover:border-indigo-500/60 shadow-xl group-hover:shadow-2xl group-hover:shadow-indigo-500/20 dark:group-hover:shadow-indigo-400/20 flex flex-col h-full transition-all duration-300">
+        {/* Image Container */}
+        <div className="aspect-[3/2] relative overflow-hidden bg-gradient-to-br from-indigo-500/20 to-cyan-500/20">
+          <Image
+            src={imgUrl}
+            alt={title}
+            fill={true}
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover object-center transition-transform duration-500 group-hover:scale-110"
+            loading="lazy"
+            placeholder="blur"
+            blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMTExMTI3Ii8+PC9zdmc+"
+            onLoad={() => setImageLoaded(true)}
+          />
 
-        {/* Desktop overlay with icons - simplified animations */}
-        <div
-          className="absolute top-0 left-0 w-full h-full bg-[#112240] opacity-0 sm:group-hover:opacity-80 transition-opacity duration-300 flex items-center justify-center hidden sm:flex"
-          style={{ willChange: "opacity" }}
-        >
-          <div className="flex space-x-4">
-            <button
-              type="button"
-              className="h-14 w-14 border-2 rounded-full border-[#A3BFFA] hover:border-[#03DAC5] flex items-center justify-center bg-[#1A365D] transition-colors duration-200"
-              onClick={() => setShowModal(true)}
-              aria-label="Preview project"
-            >
-              <EyeIcon className="h-10 w-10 text-[#A3BFFA] cursor-pointer hover:text-[#03DAC5] transition-colors duration-200" />
-            </button>
-            <a
-              href={gitUrl}
-              className="h-14 w-14 border-2 rounded-full border-[#A3BFFA] hover:border-[#03DAC5] flex items-center justify-center bg-[#1A365D] transition-colors duration-200"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="View code on GitHub"
-            >
-              <CodeBracketIcon className="h-10 w-10 text-[#A3BFFA] cursor-pointer hover:text-[#03DAC5] transition-colors duration-200" />
-            </a>
-          </div>
-        </div>
+          {/* Overlay Gradient */}
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+          {/* Desktop Action Buttons */}
+          <motion.div
+            className="absolute inset-0 flex items-center justify-center gap-4 opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300"
+            initial={{ scale: 0.5, opacity: 0 }}
+            whileHover={{ scale: 1, opacity: 1 }}
+          >
+          <motion.button
+            className="w-14 h-14 rounded-full glass backdrop-blur-md flex items-center justify-center text-indigo-500 dark:text-indigo-400 hover:bg-indigo-500/20 dark:hover:bg-indigo-400/10 border border-indigo-500/30 dark:border-indigo-400/30"
+            onClick={() => setShowModal(true)}
+            whileHover={{ scale: 1.2 }}
+            whileTap={{ scale: 0.9 }}
+            aria-label="Preview project"
+          >
+            <EyeIcon className="h-6 w-6" />
+          </motion.button>
+          <motion.a
+            href={gitUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-14 h-14 rounded-full glass backdrop-blur-md flex items-center justify-center text-indigo-500 dark:text-indigo-400 hover:bg-indigo-500/20 dark:hover:bg-indigo-400/10 border border-indigo-500/30 dark:border-indigo-400/30"
+            whileHover={{ scale: 1.2 }}
+            whileTap={{ scale: 0.9 }}
+            aria-label="View code on GitHub"
+          >
+            <CodeBracketIcon className="h-6 w-6" />
+          </motion.a>
+        </motion.div>
       </div>
 
-      {/* Mobile action buttons - simplified */}
-      <div className="flex sm:hidden gap-4 px-6 pt-4">
-        <button
-          className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-[#0553B1] to-[#42A5F5] text-white font-semibold py-2 rounded-full shadow-md"
+      {/* Mobile Action Buttons */}
+      <div className="flex sm:hidden gap-3 px-5 py-3 bg-gradient-to-r from-indigo-600/20 to-cyan-600/20 backdrop-blur-sm border-t border-indigo-500/20 dark:border-indigo-400/20">
+        <motion.button
+          className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-500 dark:to-purple-500 text-white font-semibold py-2 rounded-full text-sm"
           onClick={() => setShowModal(true)}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
-          <EyeIcon className="h-5 w-5" />
+          <EyeIcon className="h-4 w-4" />
           Preview
-        </button>
-        <a
+        </motion.button>
+        <motion.a
           href={gitUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex-1 flex items-center justify-center gap-2 bg-[#112240] text-[#03DAC5] border border-[#03DAC5] font-semibold py-2 rounded-full shadow-md"
+          className="flex-1 flex items-center justify-center gap-2 border border-indigo-500/50 dark:border-indigo-400/50 text-indigo-600 dark:text-indigo-400 font-semibold py-2 rounded-full text-sm"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
-          <CodeBracketIcon className="h-5 w-5" />
+          <CodeBracketIcon className="h-4 w-4" />
           Code
-        </a>
+        </motion.a>
       </div>
 
-      <div className="text-white rounded-b-2xl bg-[#1A365D] py-6 px-6 flex-1 flex flex-col">
-        <h5 className="text-2xl font-bold mb-2 line-clamp-1">{title}</h5>
-        <p className="text-[#A3BFFA] text-base mb-4 line-clamp-3 h-[4.5rem]">
+      {/* Content Section */}
+      <div className="px-6 py-5 flex-1 flex flex-col relative z-10 bg-gradient-to-b from-transparent to-slate-900/40">
+        <h5 className="text-lg font-bold mb-2 bg-gradient-to-r from-slate-200 to-slate-100 dark:from-slate-100 dark:to-slate-300 bg-clip-text text-transparent group-hover:from-indigo-300 group-hover:to-cyan-300 dark:group-hover:from-indigo-200 dark:group-hover:to-cyan-200 transition-all line-clamp-2">
+          {title}
+        </h5>
+        <p className="text-slate-500 dark:text-slate-400 text-sm mb-4 line-clamp-2 flex-grow group-hover:text-slate-300 dark:group-hover:text-slate-300 transition-colors">
           {description}
         </p>
+
+        {/* Tech Stack */}
         {techStack && techStack.length > 0 && (
-          <div className="flex flex-wrap gap-2 mt-auto">
+          <div className="flex flex-wrap gap-2 mt-auto pt-3 border-t border-slate-700/40 group-hover:border-indigo-500/30 transition-colors">
             {techStack.map((tech, idx) => (
-              <span
+              <motion.span
                 key={idx}
-                className="bg-[#112240] text-xs text-[#03DAC5] px-3 py-1 rounded-full font-semibold border border-[#03DAC5]"
+                className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-gradient-to-r from-indigo-600/30 to-cyan-600/30 dark:from-indigo-500/20 dark:to-cyan-500/20 text-indigo-300 dark:text-cyan-200 border border-indigo-500/40 dark:border-cyan-500/30 group-hover:from-indigo-600/50 group-hover:to-cyan-600/50 group-hover:border-indigo-400/60 transition-all"
+                whileHover={{ scale: 1.1, y: -2 }}
               >
                 {tech}
-              </span>
+              </motion.span>
             ))}
           </div>
         )}
       </div>
+      </div>
 
-      {/* Use portal for modal to avoid z-index issues */}
+      {/* Portal Modal */}
       {isBrowser && showModal && createPortal(<ImageModal />, document.body)}
     </motion.div>
   );

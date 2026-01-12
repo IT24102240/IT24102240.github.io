@@ -4,20 +4,17 @@ import { motion } from "framer-motion";
 import NavLink from "./NavLink";
 
 const MenuOverlay = ({ links, resumeLink, setNavbarOpen }) => {
-  // Direct download function for mobile devices
   const handleResumeDownload = (e) => {
     e.preventDefault();
 
-    // Force download using this approach which works better on mobile
     const link = document.createElement("a");
     link.href = resumeLink.path;
     link.setAttribute("download", "Kavindu_Alwis_CV.pdf");
-    link.setAttribute("target", "_blank"); // This helps on some mobile browsers
+    link.setAttribute("target", "_blank");
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
 
-    // Close the menu after attempting download
     setNavbarOpen(false);
   };
 
@@ -55,29 +52,35 @@ const MenuOverlay = ({ links, resumeLink, setNavbarOpen }) => {
 
   return (
     <motion.div
-      className="fixed left-0 top-[72px] w-full bg-[#0a192f] backdrop-blur-lg bg-opacity-95 h-screen flex flex-col items-center z-30"
+      className="fixed left-0 top-[72px] w-full glass backdrop-blur-lg h-screen flex flex-col items-center z-30"
       initial="hidden"
       animate="visible"
       exit="exit"
       variants={menuVariants}
     >
-      <div className="flex flex-col items-center justify-center space-y-6 py-8">
+      <div className="flex flex-col items-center justify-center space-y-6 py-12">
         {links.map((link, index) => (
           <motion.div
             key={index}
             variants={itemVariants}
             onClick={handleLinkClick}
           >
-            <NavLink href={link.path} title={link.title} className="text-2xl" />
+            <NavLink
+              href={link.path}
+              title={link.title}
+              className="text-2xl md:text-3xl font-semibold"
+            />
           </motion.div>
         ))}
         <motion.div variants={itemVariants}>
-          <button
+          <motion.button
             onClick={handleResumeDownload}
-            className="mt-4 px-7 py-3 rounded-full bg-gradient-to-r from-[#03DAC5] to-[#42A5F5] hover:shadow-lg hover:shadow-[#03DAC5]/30 text-white font-medium"
+            className="mt-4 px-8 py-3 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-500 dark:to-purple-500 hover:shadow-lg hover:shadow-indigo-500/50 text-white font-semibold"
+            whileHover={{ scale: 1.05, y: -2 }}
+            whileTap={{ scale: 0.95 }}
           >
             {resumeLink.title}
-          </button>
+          </motion.button>
         </motion.div>
       </div>
     </motion.div>

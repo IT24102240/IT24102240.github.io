@@ -110,6 +110,11 @@ const TAB_DATA = [
           <span className="text-sm text-gray-300">2023 - Present</span>
         </li>
         <li>
+          <span className="font-bold text-blue-400">🚀 BlueCoast (USA) - Technical Project Manager</span>
+          <br />
+          <span className="text-sm text-gray-300">Jul 2024 - Present</span>
+        </li>
+        <li>
           <span className="font-bold text-purple-400">☕ Java Developer</span>
           <br />
           <span className="text-sm text-gray-300">Jul 2024 - Present</span>

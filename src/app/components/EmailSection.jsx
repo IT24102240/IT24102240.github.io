@@ -159,7 +159,7 @@ const EmailSection = () => {
               value={formData.name}
               onChange={handleChange}
               className="p-2.5 bg-[#1A365D] border border-[#42A5F5] placeholder-[#A3BFFA] text-gray-100 text-sm rounded-2xl block w-full"
-              placeholder="John Doe"
+              placeholder="Name"
             />
 
             <label
@@ -175,7 +175,7 @@ const EmailSection = () => {
               value={formData.email}
               onChange={handleChange}
               className="p-2.5 bg-[#1A365D] border border-[#42A5F5] placeholder-[#A3BFFA] text-gray-100 text-sm rounded-2xl block w-full"
-              placeholder="john@example.com"
+              placeholder="email@example.com"
             />
 
             <label

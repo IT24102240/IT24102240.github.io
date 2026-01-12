@@ -103,37 +103,36 @@ const NavLink = ({
   // For resume link, use a button-styled component
   if (isResumeLink) {
     return (
-      <a
+      <motion.a
         href={href}
-        className="rounded-full bg-[#03DAC5] px-5 py-2.5 text-sm font-medium text-[#0a192f] hover:bg-[#42A5F5] transition-colors duration-300 cursor-pointer inline-block"
+        className="rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-500 dark:to-purple-500 px-6 py-2.5 text-sm font-semibold text-white hover:shadow-lg hover:shadow-indigo-500/50 dark:hover:shadow-indigo-400/30 transition-all"
         download="Kavindu_Alwis_CV.pdf"
         onClick={handleResumeDownload}
+        whileHover={{ scale: 1.05, y: -2 }}
+        whileTap={{ scale: 0.95 }}
       >
-        <motion.span
-          whileHover={{ scale: 1.05 }}
-          transition={{ duration: 0.2 }}
-          className="flex items-center justify-center"
-        >
-          {title}
-        </motion.span>
-      </a>
+        {title}
+      </motion.a>
     );
   }
 
   return (
     <Link href={href} onClick={handleScroll} className="relative group">
       <motion.span
-        className={`block py-2 pl-3 pr-4 ${
-          isActive ? "text-white font-medium" : "text-[#ADB7BE]"
-        } sm:text-xl rounded md:p-0 hover:text-white transition-colors duration-300`}
+        className="block py-2 px-0 text-slate-700 dark:text-slate-300 sm:text-lg font-medium hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-300"
         whileHover={{ scale: 1.05 }}
         transition={{ duration: 0.2 }}
       >
         {title}
       </motion.span>
 
-      {/* Animated underline effect */}
-      <span className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-purple-500 to-blue-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+      {/* Animated gradient underline */}
+      <motion.span
+        className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-indigo-600 to-cyan-500 dark:from-indigo-400 dark:to-cyan-400"
+        initial={{ width: 0 }}
+        whileHover={{ width: "100%" }}
+        transition={{ duration: 0.3 }}
+      />
     </Link>
   );
 };

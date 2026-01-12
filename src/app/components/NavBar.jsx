@@ -67,24 +67,24 @@ const NavBar = () => {
       initial="hidden"
       animate="visible"
       variants={navbarVariants}
-      className={`fixed top-0 left-0 right-0 z-40 ${
+      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
         scrolling
-          ? "bg-[#0a192f]/90 backdrop-blur-md border-b border-[#112240]/50 shadow-lg"
+          ? "glass shadow-lg"
           : "bg-transparent"
-      } transition-all duration-300`}
+      }`}
     >
       <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between py-4">
           <Link href={"/"}>
             <motion.div
-              className="text-white font-bold text-xl md:text-2xl"
+              className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-500 font-bold text-xl md:text-2xl"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              ALWIS<span className="text-[#03DAC5]">DEV</span>
+              ALWIS<span className="text-cyan-400">DEV</span>
             </motion.div>
           </Link>
-          <div className="hidden md:flex md:items-center md:gap-x-6">
+          <div className="hidden md:flex md:items-center md:gap-x-8">
             {navLinks.map((link, index) => (
               <motion.div
                 key={index}
@@ -107,10 +107,10 @@ const NavBar = () => {
               />
             </motion.div>
           </div>
-          <div className="md:hidden">
+          <div className="flex items-center gap-4 md:hidden">
             <button
               onClick={() => setNavbarOpen(!navbarOpen)}
-              className="flex items-center px-3 py-2 text-[#03DAC5] hover:text-[#42A5F5] transition-colors duration-300"
+              className="flex items-center px-3 py-2 text-indigo-500 hover:text-purple-500 transition-colors duration-300"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

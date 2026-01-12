@@ -46,7 +46,7 @@ function Home() {
   }, []);
 
   return (
-    <main className="flex min-h-screen flex-col bg-gradient-to-b from-[#0a192f] to-[#112240]">
+    <main className="flex min-h-screen flex-col bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
       <AnimatePresence mode="wait">
         {isLoading ? (
           <LoadingScreen key="loading" />
@@ -99,7 +99,7 @@ function Home() {
               href="https://wa.me/94776892127"
               target="_blank"
               rel="noopener noreferrer"
-              className="fixed z-50 bottom-6 right-6 bg-[#03DAC5] hover:bg-[#42A5F5] rounded-full shadow-lg p-4 flex items-center justify-center transition-all duration-300 transform hover:scale-110 active:scale-95 gpu-accelerated"
+              className="fixed z-50 bottom-6 right-6 bg-gradient-to-r from-green-500 to-green-600 hover:shadow-2xl hover:shadow-green-500/50 dark:from-green-600 dark:to-green-700 dark:hover:shadow-green-500/30 rounded-full shadow-lg p-4 flex items-center justify-center transition-all duration-300 transform hover:scale-110 active:scale-95"
               aria-label="Chat on WhatsApp"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -110,8 +110,8 @@ function Home() {
                 stiffness: 200,
               }}
               whileHover={{
-                scale: 1.1,
-                boxShadow: "0 10px 25px rgba(3, 218, 197, 0.5)",
+                scale: 1.15,
+                boxShadow: "0 20px 40px rgba(34, 197, 94, 0.4)",
               }}
               whileTap={{ scale: 0.95 }}
             >
